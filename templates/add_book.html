@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFF5F7;  /* Light pink background */
+            margin: 0;
+            padding: 2%;
+            text-align: center; /* To center most elements */
+        }
+
+        h1 {
+            color: #993344;
+            margin-top: 0;
+        }
+
+        label, input, select {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="number"], select {
+            padding: 10px;
+            border: 1px solid #993344;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 300px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        input[type="submit"] {
+            background-color: #993344;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 10px auto;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #722528;  /* Slightly darker pink for a hover effect */
+        }
+
+        .flash-message {
+            border: 1px solid #993344;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #FFD1DC;  /* A lighter shade of pink for the flash messages */
+            margin: 20px 0;
+            display: inline-block;
+        }
+            .navigation {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .home-button {
+        padding: 10px 20px;
+        background-color: #993344;
+        text-decoration: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+    }
+    </style>
+</head>
+<body>
+
+<h1>Add Book</h1>
+<div class="navigation">
+    <a href="{{ url_for('home') }}" class="home-button">Home <i class="fas fa-home"></i></a>
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<form action="/add_book" method="POST">
+    <label for="title">Book Title:</label>
+    <input type="text" id="title" name="title" required>
+    
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" name="isbn" required>
+    
+    <label for="publication_year">Publication Year:</label>
+    <input type="number" id="publication_year" name="publication_year" required>
+    
+    <label for="author_id">Author:</label>
+    <select id="author_id" name="author_id">
+        {% for author in authors %}
+            <option value="{{ author.id }}">{{ author.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Add Book">
+</form>
+
+</body>
+</html>
